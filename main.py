@@ -16,6 +16,7 @@ current_directory = os.getcwd()
 master_directory = os.path.join(current_directory, r'/Master')
 na_directory = os.path.join(current_directory, r'/Not Applicable')
 processed_directory = os.path.join(current_directory, r'/Processed')
+watcherPath = os.path.join(current_directory, r'/Monitor')
 if not os.path.exists(master_directory):
     os.makedirs(master_directory)
 if not os.path.exists(na_directory):
@@ -25,12 +26,25 @@ if not os.path.exists(processed_directory):
 
 #crear Master File
 masterPath = master_directory + r'/MasterFile.xls'
+if not os.path.exists(masterPath):
+    masterWB = openpyxl.Workbook()
+    masterWB.save(masterPath)
 
-def loop():
+while True:
     res = input("Do you want to change the folder to watch? (y/n)")
     
     if res == 'y':
         watcherPath = input("Enter the directory to check: ")
+        
+    #Revisar carpeta Monitor
+    monitor = FileWatcher(watcherPath)
+    monitor.naFiles(na_directory)
+    lastFile = monitor.lastModifyFile()
+    
+    #Copiar a MasterFile
+    masterfile = XFile(watcherPath, masterPath)
+    masterfile.copySheets()
+    masterfile.sendFile(processed_directory)
 
 
     
