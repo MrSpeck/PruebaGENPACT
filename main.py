@@ -10,6 +10,13 @@
 from fileWatcher import FileWatcher
 from xFile import XFile
 
-def loop():
-    masterPath = input("Enter master file path: ")
+# crear el archivo Master
 
+def loop():
+    res = input("Do you want to change the folder to watch? (y/n)")
+    
+    if res == 'y':
+        watcherPath = input("Enter the directory to check: ")
+
+
+    
