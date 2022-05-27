@@ -10,22 +10,25 @@
 from fileWatcher import FileWatcher
 from xFile import XFile
 import os
+import openpyxl
 
 # crear directorios
 current_directory = os.getcwd()
-master_directory = os.path.join(current_directory, r'/Master')
-na_directory = os.path.join(current_directory, r'/Not Applicable')
-processed_directory = os.path.join(current_directory, r'/Processed')
-watcherPath = os.path.join(current_directory, r'/Monitor')
+master_directory = os.path.join(current_directory, r'Master')
+na_directory = os.path.join(current_directory, r'Not Applicable')
+processed_directory = os.path.join(current_directory, r'Processed')
+watcherPath = os.path.join(current_directory, r'Monitor')
 if not os.path.exists(master_directory):
     os.makedirs(master_directory)
 if not os.path.exists(na_directory):
     os.makedirs(na_directory)
 if not os.path.exists(processed_directory):
     os.makedirs(processed_directory)
+if not os.path.exists(watcherPath):
+    os.makedirs(watcherPath)
 
 #crear Master File
-masterPath = master_directory + r'/MasterFile.xls'
+masterPath = master_directory + r'\MasterFile.xlsx'
 if not os.path.exists(masterPath):
     masterWB = openpyxl.Workbook()
     masterWB.save(masterPath)
@@ -42,9 +45,12 @@ while True:
     lastFile = monitor.lastModifyFile()
     
     #Copiar a MasterFile
-    masterfile = XFile(watcherPath, masterPath)
-    masterfile.copySheets()
-    masterfile.sendFile(processed_directory)
+    if not lastFile:
+        print("No files in directory")
+    else:
+        masterfile = XFile(lastFile, masterPath)
+        masterfile.copySheets()
+        masterfile.sendFile(processed_directory)
 
 
     

@@ -16,7 +16,7 @@ class FileWatcher:
     def naFiles(self, naFilesPath):
         self.allFiles = glob.glob( self.folderPath + os.path.sep + '*.*')
         self.naFiles = self.allFiles
-        self.excelFiles = glob.glob( self.folderPath + os.path.sep + '*.xls')
+        self.excelFiles = glob.glob( self.folderPath + os.path.sep + '*.xlsx')
 
         for i in self.excelFiles:
             self.naFiles.remove(i)
@@ -26,4 +26,7 @@ class FileWatcher:
 
     def lastModifyFile(self):
         self.excelFiles.sort(key=os.path.getmtime)
-        return self.excelFiles[-1]
+        try:
+            return self.excelFiles[-1]
+        except:
+            return False

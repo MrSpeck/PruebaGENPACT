@@ -8,12 +8,12 @@ import shutil
 
 class XFile:
 
-    def __init__(self,slaveFilePath, masrteFilePath):
+    def __init__(self,slaveFilePath, masterFilePath):
         self.slaveFilePath = slaveFilePath
-        self.masrteFilePath = masrteFilePath
+        self.masterFilePath = masterFilePath
 
     def copySheets(self):
-        masterWB = openpyxl.load_workbook(self.masrteFilePath)
+        masterWB = openpyxl.load_workbook(self.masterFilePath)
         slaveWB = openpyxl.load_workbook(self.slaveFilePath)
         masterSheetNumber = len(masterWB.sheetnames)
         slaveNames = slaveWB.sheetnames
@@ -28,6 +28,8 @@ class XFile:
             for r in range (1, maxRow + 1):
                 for c in range (1, maxCol + 1):
                     masterWB[masterSheetName].cell(row = r, column = c).value = slaveWB[i].cell(row = r, column = c).value
+
+        masterWB.save(self.masterFilePath)
 
     def sendFile(self, processedPath):
         shutil.move(self.slaveFilePath, processedPath, copy_function = shutil.copy)
