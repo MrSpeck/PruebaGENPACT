@@ -9,8 +9,22 @@
 
 from fileWatcher import FileWatcher
 from xFile import XFile
+import os
 
-# crear el archivo Master
+# crear directorios
+current_directory = os.getcwd()
+master_directory = os.path.join(current_directory, r'/Master')
+na_directory = os.path.join(current_directory, r'/Not Applicable')
+processed_directory = os.path.join(current_directory, r'/Processed')
+if not os.path.exists(master_directory):
+    os.makedirs(master_directory)
+if not os.path.exists(na_directory):
+    os.makedirs(na_directory)
+if not os.path.exists(processed_directory):
+    os.makedirs(processed_directory)
+
+#crear Master File
+masterPath = master_directory + r'/MasterFile.xls'
 
 def loop():
     res = input("Do you want to change the folder to watch? (y/n)")
